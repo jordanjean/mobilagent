@@ -2,6 +2,7 @@ package jus.aor.RMI.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,9 +13,13 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import jus.aor.RMI.common.Numero;
 import jus.aor.RMI.common._Annuaire;
 
 public class Annuaire implements _Annuaire {
+
+	private HashMap<String, Numero> annuaire = new HashMap<String, Numero>();
+
 	protected Annuaire(String fichier) throws ParserConfigurationException, SAXException, IOException {
 		/* Récupération de l'annuaire dans le fichier xml */
 		DocumentBuilder docBuilder = null;
@@ -36,5 +41,10 @@ public class Annuaire implements _Annuaire {
 		String arguments = doc.getElementsByTagName("service").item(0).getAttributes().getNamedItem("args")
 				.getNodeValue();
 
+	}
+
+	@Override
+	public Numero get(String abonne) {
+		return this.annuaire.get(abonne);
 	}
 }
