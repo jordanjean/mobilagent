@@ -50,4 +50,15 @@ public class Chaine {
 			hotels.add(new Hotel(name, localisation));
 		}
 	}
+
+	public List<Hotel> get(String localisation) {
+		List<Hotel> list = new ArrayList<Hotel>();
+
+		for (Hotel hotel : this.hotels) {
+			if (localisation.equals(hotel.localisation)) {
+				list.add(hotel);
+			}
+		}
+		return list;
+	}
 }
