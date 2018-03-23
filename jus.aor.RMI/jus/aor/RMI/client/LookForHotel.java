@@ -14,9 +14,9 @@ import jus.aor.RMI.common._Chaine;
 public class LookForHotel {
 	/** le critère de localisaton choisi */
 	private String localisation;
-	private int port = 1099;
+	private int port = 2001;
 	private _Annuaire annuaire;
-	private int nbChaines = 6;
+	private int nbChaines = 1;
 	private List<Hotel> hotels = new ArrayList<Hotel>();
 
 	// ...
@@ -28,9 +28,9 @@ public class LookForHotel {
 	 *            critère de localisation
 	 */
 	public LookForHotel(String[] args) {
-		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new SecurityManager());
-		}
+//		if (System.getSecurityManager() == null) {
+//			System.setSecurityManager(new SecurityManager());
+//		}
 		if (args.length != 1) {
 			System.out.println("Error: please select a valid location");
 			System.exit(1);
