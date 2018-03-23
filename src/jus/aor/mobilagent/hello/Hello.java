@@ -26,6 +26,12 @@ public class Hello extends Agent{
 	 * l'action à entreprendre sur les serveurs visités  
 	 */
 	protected _Action doIt = new _Action(){
+
+	    @Override
+	    public void execute() {
+		// TODO Auto-generated method stub
+		
+	    }
 		// ...
 	};
 	/* (non-Javadoc)
