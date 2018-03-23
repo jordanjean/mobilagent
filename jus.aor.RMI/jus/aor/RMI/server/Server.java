@@ -1,11 +1,17 @@
 package jus.aor.RMI.server;
 
+import java.io.IOException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 public class Server {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
 		int port = 1099;
 		int nbChaines = 6;
@@ -27,12 +33,12 @@ public class Server {
 		Registry registre;
 		for (int i = 1; i <= nbChaines; i++) {
 			registre = LocateRegistry.createRegistry(port + i);
-			Chaine string = new Chaine("../DataStore/Hotels" + i + ".xml");
-			registre.bind("chaine" + i, string);
+			Chaine chaine = new Chaine("../DataStore/Hotels" + i + ".xml");
+			registre.rebind("chaine" + i, chaine);
 		}
 		registre = LocateRegistry.createRegistry(port + nbChaines + 1);
 		Annuaire a = new Annuaire("DataStore/Annuaire.xml");
-		registre.bind("annuaire", a);
+		registre.rebind("annuaire", a);
 
 		System.out.println("Démarrage du serveur effectué !");
 	}
