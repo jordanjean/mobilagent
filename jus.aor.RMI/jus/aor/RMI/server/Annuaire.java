@@ -2,7 +2,7 @@ package jus.aor.RMI.server;
 
 import java.io.File;
 import java.io.IOException;
-import java.rmi.server.UnicastRemoteObject;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
 import jus.aor.RMI.common.Numero;
 import jus.aor.RMI.common._Annuaire;
 
-public class Annuaire extends UnicastRemoteObject implements _Annuaire {
+public class Annuaire implements _Annuaire {
 
 	private HashMap<String, Numero> annuaire = new HashMap<String, Numero>();
 
@@ -37,15 +37,10 @@ public class Annuaire extends UnicastRemoteObject implements _Annuaire {
 			name = attrs.getNamedItem("name").getNodeValue();
 			numero = attrs.getNamedItem("numero").getNodeValue();
 		}
-
-		// On récupère les arguments pour la construction de Chaine
-		String arguments = doc.getElementsByTagName("service").item(0).getAttributes().getNamedItem("args")
-				.getNodeValue();
-
 	}
 
 	@Override
-	public Numero get(String abonne) {
+	public Numero get(String abonne) throws RemoteException{
 		return this.annuaire.get(abonne);
 	}
 }

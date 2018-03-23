@@ -3,7 +3,6 @@ package jus.aor.RMI.server;
 import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +17,7 @@ import org.xml.sax.SAXException;
 import jus.aor.RMI.common.Hotel;
 import jus.aor.RMI.common._Chaine;
 
-public class Chaine extends UnicastRemoteObject implements _Chaine{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Chaine implements _Chaine{
 	private List<Hotel> hotels = new ArrayList<Hotel>();
 
 	protected Chaine(String fichier) throws RemoteException {

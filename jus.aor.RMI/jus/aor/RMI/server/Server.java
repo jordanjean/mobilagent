@@ -1,7 +1,6 @@
 package jus.aor.RMI.server;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -13,7 +12,7 @@ public class Server {
 
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
-		int port = 1099;
+		int port = 1119;
 		int nbChaines = 4;
 
 		if (args.length == 1) {
@@ -26,14 +25,13 @@ public class Server {
 		}
 
 		// installation d'un securityManager
-		if (System.getSecurityManager() == null) {
+		/*if(System.getSecurityManager() == null){
 			System.setSecurityManager(new SecurityManager());
-		}
-
+		}*/
 		Registry registre;
 		for (int i = 1; i <= nbChaines; i++) {
 			registre = LocateRegistry.createRegistry(port + i);
-			Chaine chaine = new Chaine("../DataStore/Hotels" + i + ".xml");
+			Chaine chaine = new Chaine("DataStore/Hotels" + i + ".xml");
 			registre.rebind("chaine" + i, chaine);
 		}
 		registre = LocateRegistry.createRegistry(port + nbChaines + 1);
