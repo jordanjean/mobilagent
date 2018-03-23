@@ -14,7 +14,7 @@ public class Server {
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
 
 		int port = 1099;
-		int nbChaines = 6;
+		int nbChaines = 4;
 
 		if (args.length == 1) {
 			try {
