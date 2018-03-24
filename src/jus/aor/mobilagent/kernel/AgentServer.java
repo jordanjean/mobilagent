@@ -1,11 +1,18 @@
 package jus.aor.mobilagent.kernel;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URI;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.net.*;
-import java.nio.channels.ServerSocketChannel;
 
 /**
  * Le server qui supporte le modèle du bus à agents mobiles "mobilagent".
@@ -72,7 +79,9 @@ final class AgentServer {
 	    // récupération de l'agent et lancement
 	    _Agent agent = (_Agent)ais.readObject();
 	    agent.reInit(this, name);
+	    ais.close();
 	    new Thread(agent).start();
+	    logger.log(Level.INFO, "agent lancé");
 	}
     }
 

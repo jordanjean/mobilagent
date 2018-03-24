@@ -3,16 +3,10 @@
  */
 package jus.aor.mobilagent.kernel;
 
-import java.lang.reflect.Field;
 import java.net.InetAddress;
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import jus.aor.mobilagent.kernel.BAMAgentClassLoader;
-import jus.aor.mobilagent.kernel._Agent;
 
 /**
  * Le serveur principal permettant le lancement d'un serveur d'agents mobiles et les fonctions permettant de déployer des services et des agents.
