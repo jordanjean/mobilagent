@@ -63,6 +63,7 @@ final class AgentServer {
     void run() throws IOException, ClassNotFoundException {
 	// A COMPLETER
 	// boucle de réception des agents
+	running = true;
 	while (true) {
 	    // en attente de connexion
 	    Socket client = s.accept();
