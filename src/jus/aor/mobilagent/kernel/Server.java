@@ -3,7 +3,9 @@
  */
 package jus.aor.mobilagent.kernel;
 
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,6 +87,15 @@ public final class Server implements _Server {
 	 * @throws Exception
 	 */
 	protected void startAgent(_Agent agent, BAMAgentClassLoader loader) throws Exception {
-		//A COMPLETER
+		Socket socket = new Socket(this.agentServer.site().getHost(), this.agentServer.site().getPort());
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		
+		Jar jar = loader.extractCode();
+		
+		out.writeObject(jar);
+		out.writeObject(agent);
+		logger.log(Level.FINE,"Agent received");
+		out.close();
+		socket.close();
 	}
 }
