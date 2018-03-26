@@ -1,29 +1,46 @@
 package jus.aor.mobilagent.kernel;
 
-public class Agent implements _Agent{
+import com.sun.xml.internal.bind.v2.TODO;
 
+public class Agent implements _Agent {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private AgentServer agentServer;
+    protected String serverName;
+    private Route route;
+    
     @Override
     public void run() {
-	// TODO Auto-generated method stub
-	
+	if(route.hasNext){
+	    route.next().action.execute();
+	}else{
+	    System.out.println("Route vide");
+	}
     }
 
     @Override
     public void init(AgentServer agentServer, String serverName) {
-	// TODO Auto-generated method stub
-	
+	this.agentServer = agentServer;
+	this.serverName = serverName;
+	this.route = new Route(new Etape(agentServer.site(), _Action.NIHIL));
     }
 
     @Override
     public void reInit(AgentServer server, String serverName) {
-	// TODO Auto-generated method stub
-	
+	this.agentServer = server;
+	this.serverName = serverName;
     }
 
     @Override
     public void addEtape(Etape etape) {
-	// TODO Auto-generated method stub
-	
+	route.add(etape);
+    }
+
+    protected _Action retour() {
+	return this.route.retour.action;
     }
 
 }
