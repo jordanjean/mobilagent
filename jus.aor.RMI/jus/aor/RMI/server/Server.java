@@ -1,4 +1,5 @@
 package jus.aor.RMI.server;
+import jus.aor.RMI.*;
 
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
@@ -34,8 +35,8 @@ public class Server {
 		 */
 		try {
 			Registry registre;
-			registre = LocateRegistry.createRegistry(port);
 			for (int i = 1; i <= nbChaines; i++) {
+				registre = LocateRegistry.createRegistry(port + i);
 				_Chaine chaine = new Chaine("DataStore/Hotels" + i + ".xml");
 				registre.rebind("chaine" + i, chaine);
 			}

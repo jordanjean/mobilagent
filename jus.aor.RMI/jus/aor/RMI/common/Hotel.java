@@ -1,6 +1,12 @@
 package jus.aor.RMI.common;
+import jus.aor.RMI.*;
+import java.io.Serializable;
 
-public class Hotel {
+public class Hotel implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** la localisation de l'hôtel */
 	public String localisation;
 	/** le nom de l'hôtel */

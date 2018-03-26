@@ -1,4 +1,6 @@
 package jus.aor.RMI.client;
+import jus.aor.RMI.server.*;
+import jus.aor.RMI.common.*;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -27,7 +29,7 @@ public class LookForHotel {
 	 *            les arguments n'en comportant qu'un seul qui indique le
 	 *            critère de localisation
 	 */
-	public LookForHotel(String[] args) {
+	public LookForHotel(String[] args) throws RemoteException, NotBoundException {
 //		if (System.getSecurityManager() == null) {
 //			System.setSecurityManager(new SecurityManager());
 //		}
@@ -58,6 +60,7 @@ public class LookForHotel {
 			this.hotels.addAll((List<Hotel>) ((_Chaine) registre.lookup("chaine" + i)).get(this.localisation));
 		}
 
+		registre = LocateRegistry.getRegistry(this.port + (this.nbChaines+1));
 		this.annuaire = (_Annuaire) registre.lookup("annuaire");
 
 		// On arrête le timer ici, l'affichage ne fait pas partie du temps de
