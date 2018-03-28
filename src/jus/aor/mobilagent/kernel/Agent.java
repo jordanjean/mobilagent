@@ -1,6 +1,13 @@
 package jus.aor.mobilagent.kernel;
 
-import com.sun.xml.internal.bind.v2.TODO;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URI;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Agent implements _Agent {
 
@@ -11,13 +18,39 @@ public class Agent implements _Agent {
     private AgentServer agentServer;
     protected String serverName;
     private Route route;
+    private Logger logger;
     
     @Override
     public void run() {
+	logger.log(Level.INFO, "agent lancé");
 	if(route.hasNext){
-	    route.next().action.execute();
+	    // exécution de l'action sur le serveur actuel
+	    _Action action = route.next().action;
+	    logger.log(Level.INFO, "exécution de l'action " + action + "sur le serveur " + serverName);
+	    action.execute();
+	    
+	    // déplacement de l'agent vers le prochain serveur
+	    if(route.hasNext){
+		URI prochainServer = route.next().server;
+		Socket s;
+		try {
+		    s = new Socket(prochainServer.getHost(), prochainServer.getPort());
+		    ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+		    BAMAgentClassLoader loader = (BAMAgentClassLoader) this.getClass().getClassLoader();
+		    Jar baseCode = loader.extractCode();
+		    os.writeObject(baseCode);
+		    os.writeObject(this);
+		    os.close();
+		    logger.log(Level.INFO, "agent déplacé");
+		} catch (UnknownHostException e) {
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		
+	    }
 	}else{
-	    System.out.println("Route vide");
+	    logger.log(Level.INFO, "feuille de route épuisé");
 	}
     }
 
@@ -26,12 +59,22 @@ public class Agent implements _Agent {
 	this.agentServer = agentServer;
 	this.serverName = serverName;
 	this.route = new Route(new Etape(agentServer.site(), _Action.NIHIL));
+	try {
+	    logger = Logger.getLogger("jus.aor.mobilagent." + InetAddress.getLocalHost().getHostName() + "." + serverName);
+	} catch (UnknownHostException e) {
+	    e.printStackTrace();
+	}
     }
 
     @Override
     public void reInit(AgentServer server, String serverName) {
 	this.agentServer = server;
 	this.serverName = serverName;
+	try {
+	    logger = Logger.getLogger("jus.aor.mobilagent." + InetAddress.getLocalHost().getHostName() + "." + serverName);
+	} catch (UnknownHostException e) {
+	    e.printStackTrace();
+	}
     }
 
     @Override
