@@ -4,6 +4,8 @@
 package jus.aor.mobilagent.kernel;
 
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URI;
@@ -59,12 +61,15 @@ public final class Server implements _Server {
 	 */
 	public final void addService(String name, String classeName, String codeBase, Object... args) {
 		try {
-			BAMServerClassLoader Loader = new BAMServerClassLoader( new URL[] {new URL(codeBase)}, this.getClass().getClassLoader());
-			
-			//TODO define services ? 
-			
-			//this.agentServer.addService(name, service);
-			
+			//A COMPLETER
+		    	BAMServerClassLoader loader = new BAMServerClassLoader(new URL[] {}, this.getClass().getClassLoader());
+		    	loader.addURL(new URL(codeBase));
+		    	
+		    	Class<?> classe = Class.forName(classeName, true, loader);
+		    	Constructor<?> cons = classe.getConstructor(Object[].class);
+		    	_Service<?> service = (_Service<?>) cons.newInstance(new Object[] { args });
+		    	
+		    	this.agentServer.addService(name, service);
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
@@ -85,7 +90,19 @@ public final class Server implements _Server {
 			//Chargement de la classe de l'agent
 			BAMAgentClassLoader agentLoader = new BAMAgentClassLoader(new URI(codeBase).getPath() ,this.getClass().getClassLoader());
 			
-			
+	    	Class<?> classe = Class.forName(classeName, true, loader);
+	    	Constructor<?> cons = classe.getConstructor(Object.class);
+	    	_Agent agent = (_Agent) cons.newInstance(new Object[]{args});
+	    	
+	    	agent.init(this.agentServer, this.name);
+	    	for(int i = 0; i < etapeAction.size(); i++){
+	    	    Field f = classe.getDeclaredField(etapeAction.get(i));
+	    	    f.setAccessible(true);
+	    	    _Action action = (_Action)f.get(agent);
+	    	    agent.addEtape(new Etape(new URI(etapeAddress.get(i)), action));
+	    	}
+	    	logger.log(Level.INFO, "agent déployé");
+	    	startAgent(agent, loader);
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
@@ -109,5 +126,6 @@ public final class Server implements _Server {
 		logger.log(Level.FINE,"Agent received");
 		out.close();
 		socket.close();
+
 	}
 }
