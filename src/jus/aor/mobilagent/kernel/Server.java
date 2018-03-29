@@ -6,6 +6,8 @@ package jus.aor.mobilagent.kernel;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +59,12 @@ public final class Server implements _Server {
 	 */
 	public final void addService(String name, String classeName, String codeBase, Object... args) {
 		try {
-			//A COMPLETER
+			BAMServerClassLoader Loader = new BAMServerClassLoader( new URL[] {new URL(codeBase)}, this.getClass().getClassLoader());
+			
+			//TODO define services ? 
+			
+			//this.agentServer.addService(name, service);
+			
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
@@ -73,7 +80,12 @@ public final class Server implements _Server {
 	 */
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
-			//A COMPLETER en terme de startAgent
+			//System.out.println("Tentative de deploiement de "+classeName);
+			logger.log(Level.FINE,"Déploiement d'agent sur "+this);
+			//Chargement de la classe de l'agent
+			BAMAgentClassLoader agentLoader = new BAMAgentClassLoader(new URI(codeBase).getPath() ,this.getClass().getClassLoader());
+			
+			
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
