@@ -88,7 +88,7 @@ public final class Server implements _Server {
 			//System.out.println("Tentative de deploiement de "+classeName);
 			logger.log(Level.FINE,"Déploiement d'agent sur "+this);
 			//Chargement de la classe de l'agent
-			BAMAgentClassLoader agentLoader = new BAMAgentClassLoader(new URI(codeBase).getPath() ,this.getClass().getClassLoader());
+			BAMAgentClassLoader loader = new BAMAgentClassLoader(new URI(codeBase).getPath() ,this.getClass().getClassLoader());
 			
 	    	Class<?> classe = Class.forName(classeName, true, loader);
 	    	Constructor<?> cons = classe.getConstructor(Object.class);
