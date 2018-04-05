@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * 
  * @author Morat
  */
-final class AgentServer {
+final class AgentServer implements Runnable {
     /** le logger de ce serveur */
     private Logger logger;
     /** La table des services utilisables sur ce serveur */
@@ -57,32 +57,37 @@ final class AgentServer {
     /**
      * le lancement du serveur
      * 
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    void run() throws IOException, ClassNotFoundException {
+    public void run() {
 	// A COMPLETER
 	// boucle de réception des agents
 	running = true;
-	while (true) {
-	    // en attente de connexion
-	    Socket client = s.accept();
-	    logger.log(Level.INFO, "Connexion établie");
-	    BAMAgentClassLoader cl = new BAMAgentClassLoader(this.getClass().getClassLoader());
-	    AgentInputStream ais = new AgentInputStream(client.getInputStream(), cl);
-
-
-	    // récupération du code de l'agent (le jar)
-	    Jar jar = (Jar) ais.readObject();
-	    logger.log(Level.INFO, "jar réceptionné");
-	    cl.integrateCode(jar);
-
-	    // récupération de l'agent et lancement
-	    _Agent agent = (_Agent)ais.readObject();
-	    agent.reInit(this, name);
-	    ais.close();
-	    new Thread(agent).start();
-	    logger.log(Level.INFO, "agent lancé");
+	try{
+        	while (running) {
+        	    // en attente de connexion
+        	    Socket client = s.accept();
+        	    logger.log(Level.INFO, "Connexion établie");
+        	    BAMAgentClassLoader cl = new BAMAgentClassLoader(this.getClass().getClassLoader());
+        	    
+        	    InputStream is = client.getInputStream();
+//        	    ObjectInputStream ois = new ObjectInputStream(is);
+        	    AgentInputStream ais = new AgentInputStream(is, cl);
+        
+        	    // récupération du code de l'agent (le jar)
+        	    Jar jar = (Jar) ais.readObject();
+        	    logger.log(Level.INFO, "jar réceptionné");
+        	    cl.integrateCode(jar);
+        
+        	    // récupération de l'agent et lancement
+        	    _Agent agent = (_Agent)ais.readObject();
+        	    agent.reInit(this, name);
+        	    ais.close();
+        	    new Thread(agent).start();
+        	    client.close();
+        	}
+	}catch(Exception e){
+	    System.out.println(e);
+	    e.printStackTrace();
 	}
     }
 

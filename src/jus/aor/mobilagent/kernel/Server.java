@@ -44,11 +44,11 @@ public final class Server implements _Server {
 			/* démarrage du server d'agents mobiles attaché à cette machine */
 			//A COMPLETER
 			agentServer = new AgentServer(port, name);
-			agentServer.run();
+			new Thread(this.agentServer).start();
 			/* temporisation de mise en place du server d'agents */
 			Thread.sleep(1000);
 		}catch(Exception ex){
-			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
+			logger.log(Level.FINE," erreur durant le lancement du serveur "+this,ex);
 			return;
 		}
 	}
@@ -87,9 +87,9 @@ public final class Server implements _Server {
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
 			//A COMPLETER en terme de startAgent
-		    	BAMAgentClassLoader loader = new BAMAgentClassLoader(new URL(codeBase).getPath(), this.getClass().getClassLoader());
+		    	BAMAgentClassLoader loader = new BAMAgentClassLoader(new URI(codeBase).getPath(), this.getClass().getClassLoader());
 		    	Class<?> classe = Class.forName(classeName, true, loader);
-		    	Constructor<?> cons = classe.getConstructor(Object.class);
+		    	Constructor<?> cons = classe.getConstructor(Object[].class);
 		    	_Agent agent = (_Agent) cons.newInstance(new Object[]{args});
 		    	
 		    	agent.init(this.agentServer, this.name);
@@ -102,7 +102,9 @@ public final class Server implements _Server {
 		    	logger.log(Level.INFO, "agent déployé");
 		    	startAgent(agent, loader);
 		}catch(Exception ex){
-			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
+		    	System.out.println(ex.getMessage());
+		    	ex.printStackTrace();
+			logger.log(Level.FINE," erreur durant le lancement du serveur "+this,ex);
 			return;
 		}
 	}
@@ -121,6 +123,12 @@ public final class Server implements _Server {
     	    	os.writeObject(baseCode);
     	    	os.writeObject(agent);
     	    	os.close();
+    	    	s.close();
     	    	logger.log(Level.INFO, "Agent envoyé sur le premier serveur");
+	}
+	
+	@Override
+	public String toString() {
+	    return name;
 	}
 }

@@ -14,11 +14,14 @@ public class Agent implements _Agent {
     /**
      * 
      */
-    private static final long serialVersionUID = 1L;
-    private AgentServer agentServer;
-    protected String serverName;
+    private static final long serialVersionUID = -2664530419256779025L;
+    /**
+     * 
+     */
+    private transient AgentServer agentServer;
+    protected transient String serverName;
     private Route route;
-    private Logger logger;
+    private transient Logger logger;
     
     @Override
     public void run() {
