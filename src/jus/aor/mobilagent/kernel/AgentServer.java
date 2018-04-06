@@ -70,9 +70,9 @@ final class AgentServer implements Runnable {
         	    BAMAgentClassLoader cl = new BAMAgentClassLoader(this.getClass().getClassLoader());
         	    
         	    InputStream is = client.getInputStream();
-//        	    ObjectInputStream ois = new ObjectInputStream(is);
+//        	    ObjectInputStream ais = new ObjectInputStream(is);
         	    AgentInputStream ais = new AgentInputStream(is, cl);
-        
+
         	    // récupération du code de l'agent (le jar)
         	    Jar jar = (Jar) ais.readObject();
         	    logger.log(Level.INFO, "jar réceptionné");
@@ -82,8 +82,8 @@ final class AgentServer implements Runnable {
         	    _Agent agent = (_Agent)ais.readObject();
         	    agent.reInit(this, name);
         	    ais.close();
-        	    new Thread(agent).start();
         	    client.close();
+        	    new Thread(agent).start();
         	}
 	}catch(Exception e){
 	    System.out.println(e);

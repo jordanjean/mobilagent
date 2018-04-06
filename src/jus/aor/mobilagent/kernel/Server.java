@@ -47,6 +47,7 @@ public final class Server implements _Server {
 			new Thread(this.agentServer).start();
 			/* temporisation de mise en place du server d'agents */
 			Thread.sleep(1000);
+			logger.log(Level.INFO, "Serveur lancé");
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur "+this,ex);
 			return;
@@ -87,7 +88,7 @@ public final class Server implements _Server {
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
 			//A COMPLETER en terme de startAgent
-		    	BAMAgentClassLoader loader = new BAMAgentClassLoader(new URI(codeBase).getPath(), this.getClass().getClassLoader());
+		    	BAMAgentClassLoader loader = new BAMAgentClassLoader(codeBase, this.getClass().getClassLoader());
 		    	Class<?> classe = Class.forName(classeName, true, loader);
 		    	Constructor<?> cons = classe.getConstructor(Object[].class);
 		    	_Agent agent = (_Agent) cons.newInstance(new Object[]{args});
@@ -122,7 +123,7 @@ public final class Server implements _Server {
     	    	Jar baseCode = loader.extractCode();
     	    	os.writeObject(baseCode);
     	    	os.writeObject(agent);
-    	    	os.close();
+//    	    	os.close();
     	    	s.close();
     	    	logger.log(Level.INFO, "Agent envoyé sur le premier serveur");
 	}
