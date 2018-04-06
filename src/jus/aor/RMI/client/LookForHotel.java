@@ -1,7 +1,4 @@
 package jus.aor.RMI.client;
-import jus.aor.RMI.server.*;
-import jus.aor.RMI.common.*;
-
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -30,9 +27,9 @@ public class LookForHotel {
 	 *            critère de localisation
 	 */
 	public LookForHotel(String[] args) throws RemoteException, NotBoundException {
-//		if (System.getSecurityManager() == null) {
-//			System.setSecurityManager(new SecurityManager());
-//		}
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new SecurityManager());
+		}
 		if (args.length != 1) {
 			System.out.println("Error: please select a valid location");
 			System.exit(1);

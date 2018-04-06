@@ -20,6 +20,10 @@ import jus.aor.RMI.common._Annuaire;
 
 public class Annuaire extends UnicastRemoteObject implements _Annuaire {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HashMap<String, Numero> annuaire = new HashMap<String, Numero>();
 
 	protected Annuaire(String fichier) throws ParserConfigurationException, SAXException, IOException {

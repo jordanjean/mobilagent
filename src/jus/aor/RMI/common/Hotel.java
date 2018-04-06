@@ -1,5 +1,4 @@
 package jus.aor.RMI.common;
-import jus.aor.RMI.*;
 import java.io.Serializable;
 
 public class Hotel implements Serializable{

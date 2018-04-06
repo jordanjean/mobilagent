@@ -1,5 +1,4 @@
 package jus.aor.RMI.server;
-import jus.aor.RMI.*;
 
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
@@ -29,10 +28,11 @@ public class Server {
 		}
 
 		// installation d'un securityManager
-		/*
-		 * if(System.getSecurityManager() == null){
-		 * System.setSecurityManager(new SecurityManager()); }
-		 */
+
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new SecurityManager());
+		}
+
 		try {
 			Registry registre;
 			for (int i = 1; i <= nbChaines; i++) {
@@ -42,9 +42,9 @@ public class Server {
 			}
 			registre = LocateRegistry.createRegistry(port + nbChaines + 1);
 			_Annuaire a = new Annuaire("DataStore/Annuaire.xml");
-			try{
-			registre.rebind("annuaire", a);
-			} catch (Exception e){
+			try {
+				registre.rebind("annuaire", a);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 

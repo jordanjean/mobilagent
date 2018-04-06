@@ -19,6 +19,10 @@ import jus.aor.RMI.common.Hotel;
 import jus.aor.RMI.common._Chaine;
 
 public class Chaine extends UnicastRemoteObject implements _Chaine{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<Hotel> hotels = new ArrayList<Hotel>();
 
 	protected Chaine(String fichier) throws RemoteException {
