@@ -2,7 +2,7 @@ package jus.aor.mobilagent.kernel;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Map.Entry;
 import java.util.jar.JarException;
 
 public class BAMAgentClassLoader extends ClassLoader {
@@ -27,15 +27,14 @@ public class BAMAgentClassLoader extends ClassLoader {
 		code = jar;
 		
 		// define all the classes from the jar file
-		for(Iterator<Map.Entry<String,byte[]>> iter = code.iterator(); iter.hasNext();) {
-			Map.Entry<String, byte[]> currentClass = iter.next();
-			this.defineClass(className(currentClass.getKey()), currentClass.getValue(), 0, currentClass.getValue().length);
+		for(Entry<String, byte[]> entry : jar) {
+			this.defineClass(className(entry.getKey()), entry.getValue(), 0, entry.getValue().length);	
 		}
 	}
 	
 	public String className(String name){
 		//delete the .class at the end and change the / into . 
-		return name.substring(0, name.length()-6).replace('/', '.');
+		return name.replace(".class", "").replace("/", ".");
 	}
 	
 	public Jar extractCode(){
@@ -45,8 +44,8 @@ public class BAMAgentClassLoader extends ClassLoader {
 	public String toString(){
 		//print the name of the jar and the classes in it
 		String classesToPrint = "BAM : " + code.toString() + "\n";
-		for(Iterator<Map.Entry<String,byte[]>> iter = code.iterator(); iter.hasNext();) {
-			Map.Entry<String, byte[]> currentClass = iter.next();
+		for(Iterator<Entry<String,byte[]>> iter = code.iterator(); iter.hasNext();) {
+			Entry<String, byte[]> currentClass = iter.next();
 			classesToPrint.concat(className(currentClass.getKey()));
 		}
 		

@@ -44,11 +44,12 @@ public final class Server implements _Server {
 			/* démarrage du server d'agents mobiles attaché à cette machine */
 			//A COMPLETER
 			agentServer = new AgentServer(port, name);
-			agentServer.run();
+			new Thread(this.agentServer).start();
 			/* temporisation de mise en place du server d'agents */
 			Thread.sleep(1000);
+			logger.log(Level.INFO, "Serveur lancé");
 		}catch(Exception ex){
-			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
+			logger.log(Level.FINE," erreur durant le lancement du serveur "+this,ex);
 			return;
 		}
 	}
@@ -85,26 +86,25 @@ public final class Server implements _Server {
 	 */
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
-			//System.out.println("Tentative de deploiement de "+classeName);
-			logger.log(Level.FINE,"Déploiement d'agent sur "+this);
-			//Chargement de la classe de l'agent
-			BAMAgentClassLoader loader = new BAMAgentClassLoader(new URI(codeBase).getPath() ,this.getClass().getClassLoader());
-			
-	    	Class<?> classe = Class.forName(classeName, true, loader);
-	    	Constructor<?> cons = classe.getConstructor(Object.class);
-	    	_Agent agent = (_Agent) cons.newInstance(new Object[]{args});
-	    	
-	    	agent.init(this.agentServer, this.name);
-	    	for(int i = 0; i < etapeAction.size(); i++){
-	    	    Field f = classe.getDeclaredField(etapeAction.get(i));
-	    	    f.setAccessible(true);
-	    	    _Action action = (_Action)f.get(agent);
-	    	    agent.addEtape(new Etape(new URI(etapeAddress.get(i)), action));
-	    	}
-	    	logger.log(Level.INFO, "agent déployé");
-	    	startAgent(agent, loader);
+			//A COMPLETER en terme de startAgent
+		    	BAMAgentClassLoader loader = new BAMAgentClassLoader(codeBase, this.getClass().getClassLoader());
+		    	Class<?> classe = Class.forName(classeName, true, loader);
+		    	Constructor<?> cons = classe.getConstructor(Object[].class);
+		    	_Agent agent = (_Agent) cons.newInstance(new Object[]{args});
+		    	
+		    	agent.init(this.agentServer, this.name);
+		    	for(int i = 0; i < etapeAction.size(); i++){
+		    	    Field f = classe.getDeclaredField(etapeAction.get(i));
+		    	    f.setAccessible(true);
+		    	    _Action action = (_Action)f.get(agent);
+		    	    agent.addEtape(new Etape(new URI(etapeAddress.get(i)), action));
+		    	}
+		    	logger.log(Level.INFO, "agent déployé");
+		    	startAgent(agent, loader);
 		}catch(Exception ex){
-			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
+		    	System.out.println(ex.getMessage());
+		    	ex.printStackTrace();
+			logger.log(Level.FINE," erreur durant le lancement du serveur "+this,ex);
 			return;
 		}
 	}
@@ -116,16 +116,19 @@ public final class Server implements _Server {
 	 * @throws Exception
 	 */
 	protected void startAgent(_Agent agent, BAMAgentClassLoader loader) throws Exception {
-		Socket socket = new Socket(this.agentServer.site().getHost(), this.agentServer.site().getPort());
-		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-		
-		Jar jar = loader.extractCode();
-		
-		out.writeObject(jar);
-		out.writeObject(agent);
-		logger.log(Level.FINE,"Agent received");
-		out.close();
-		socket.close();
-
+		//A COMPLETER
+		Socket s = new Socket(this.agentServer.site().getHost(), this.agentServer.site().getPort());
+    	ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+    	Jar baseCode = loader.extractCode();
+    	os.writeObject(baseCode);
+    	os.writeObject(agent);
+//    	os.close();
+    	s.close();
+    	logger.log(Level.INFO, "Agent envoyé sur le premier serveur");
+	}
+	
+	@Override
+	public String toString() {
+	    return name;
 	}
 }
