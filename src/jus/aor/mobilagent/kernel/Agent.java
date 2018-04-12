@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Agent implements _Agent {
+public abstract class Agent implements _Agent {
 
     /**
      * 
@@ -18,7 +18,6 @@ public class Agent implements _Agent {
     /**
      * 
      */
-    @SuppressWarnings("unused")
     private transient AgentServer agentServer;
     protected transient String serverName;
     private Route route;
@@ -55,6 +54,11 @@ public class Agent implements _Agent {
 	    }
 	}else{
 	    logger.log(Level.INFO, "Fin de la feuille de route, retour au serveur " + serverName);
+	    // exécution de l'action retour
+	    _Action action = route.next().action;
+	    logger.log(Level.INFO, "exécution de l'action " + action + " sur le serveur " + serverName);
+	    action.execute();
+	    agentServer.terminate();
 	}
     }
 
@@ -62,7 +66,7 @@ public class Agent implements _Agent {
     public void init(AgentServer agentServer, String serverName) {
 	this.agentServer = agentServer;
 	this.serverName = serverName;
-	this.route = new Route(new Etape(agentServer.site(), _Action.NIHIL));
+	this.route = new Route(new Etape(agentServer.site(), this.retour()));
 	this.route.add(new Etape(agentServer.site(), _Action.NIHIL));
 	try {
 	    logger = Logger.getLogger("jus.aor.mobilagent." + InetAddress.getLocalHost().getHostName() + "." + serverName);
@@ -87,8 +91,5 @@ public class Agent implements _Agent {
 	route.add(etape);
     }
 
-    protected _Action retour() {
-	return this.route.retour.action;
-    }
-
+    protected abstract _Action retour();
 }
