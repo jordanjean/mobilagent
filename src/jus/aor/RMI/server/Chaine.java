@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 import jus.aor.RMI.common.Hotel;
 import jus.aor.RMI.common._Chaine;
 
-public class Chaine extends UnicastRemoteObject implements _Chaine{
+public class Chaine extends UnicastRemoteObject implements _Chaine {
 	/**
 	 * 
 	 */

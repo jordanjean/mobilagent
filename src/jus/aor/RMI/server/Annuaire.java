@@ -41,6 +41,7 @@ public class Annuaire extends UnicastRemoteObject implements _Annuaire {
 			attrs = list.item(i).getAttributes();
 			name = attrs.getNamedItem("name").getNodeValue();
 			numero = attrs.getNamedItem("numero").getNodeValue();
+			annuaire.put(name, new Numero(numero));
 		}
 	}
 

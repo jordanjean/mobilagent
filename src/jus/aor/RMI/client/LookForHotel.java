@@ -15,7 +15,7 @@ public class LookForHotel {
 	private String localisation;
 	private int port = 2001;
 	private _Annuaire annuaire;
-	private int nbChaines = 1;
+	private int nbChaines = 2;
 	private List<Hotel> hotels = new ArrayList<Hotel>();
 
 	// ...
@@ -53,8 +53,8 @@ public class LookForHotel {
 		// On parcourt les chaines hotelières et on regarde dans leur
 		// registre à leur port les hotels qu'elle possède à la localisation
 		for (int i = 1; i <= this.nbChaines; i++) {
-			registre = LocateRegistry.getRegistry(this.port + i);
-			this.hotels.addAll((List<Hotel>) ((_Chaine) registre.lookup("chaine" + i)).get(this.localisation));
+			registre = LocateRegistry.getRegistry(this.port+i);
+			this.hotels.addAll((List<Hotel>) ((_Chaine) registre.lookup("chaine" +i)).get(this.localisation));
 		}
 
 		registre = LocateRegistry.getRegistry(this.port + (this.nbChaines+1));
@@ -68,6 +68,7 @@ public class LookForHotel {
 		System.out.println("Hotels :");
 		for (Hotel h : hotels) {
 			System.out.println(h.toString());
+            System.out.println(annuaire.get(h.name));
 		}
 
 		return tf - td;
