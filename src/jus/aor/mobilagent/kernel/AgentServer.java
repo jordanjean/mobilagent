@@ -70,7 +70,6 @@ final class AgentServer implements Runnable {
         	    BAMAgentClassLoader cl = new BAMAgentClassLoader(this.getClass().getClassLoader());
         	    
         	    InputStream is = client.getInputStream();
-//        	    ObjectInputStream ais = new ObjectInputStream(is);
         	    AgentInputStream ais = new AgentInputStream(is, cl);
 
         	    // récupération du code de l'agent (le jar)
