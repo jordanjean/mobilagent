@@ -27,9 +27,9 @@ public class LookForHotel {
 	 *            critère de localisation
 	 */
 	public LookForHotel(String[] args) throws RemoteException, NotBoundException {
-		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new SecurityManager());
-		}
+//		if (System.getSecurityManager() == null) {
+//			System.setSecurityManager(new SecurityManager());
+//		}
 		if (args.length != 1) {
 			System.out.println("Error: please select a valid location");
 			System.exit(1);

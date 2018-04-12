@@ -29,9 +29,9 @@ public class Server {
 
 		// installation d'un securityManager
 
-		if (System.getSecurityManager() == null) {
-			System.setSecurityManager(new SecurityManager());
-		}
+//		if (System.getSecurityManager() == null) {
+//			System.setSecurityManager(new SecurityManager());
+//		}
 
 		try {
 			Registry registre;
