@@ -123,9 +123,8 @@ public final class Server implements _Server {
     	    	Jar baseCode = loader.extractCode();
     	    	os.writeObject(baseCode);
     	    	os.writeObject(agent);
-//    	    	os.close();
     	    	s.close();
-    	    	logger.log(Level.INFO, "Agent envoyé sur le premier serveur");
+    	    	logger.log(Level.INFO, "Agent envoyé sur ce même serveur");
 	}
 	
 	@Override

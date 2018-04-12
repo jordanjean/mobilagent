@@ -18,6 +18,7 @@ public class Agent implements _Agent {
     /**
      * 
      */
+    @SuppressWarnings("unused")
     private transient AgentServer agentServer;
     protected transient String serverName;
     private Route route;
@@ -29,12 +30,13 @@ public class Agent implements _Agent {
 	if(route.hasNext){
 	    // exécution de l'action sur le serveur actuel
 	    _Action action = route.next().action;
-	    logger.log(Level.INFO, "exécution de l'action " + action + "sur le serveur " + serverName);
+	    logger.log(Level.INFO, "exécution de l'action " + action + " sur le serveur " + serverName);
 	    action.execute();
 	    
 	    // déplacement de l'agent vers le prochain serveur
 	    if(route.hasNext){
-		URI prochainServer = route.next().server;
+		URI prochainServer = route.get().server;
+		logger.log(Level.INFO, "Déplacement de l'agent sur le serveur " + prochainServer);
 		Socket s;
 		try {
 		    s = new Socket(prochainServer.getHost(), prochainServer.getPort());
@@ -43,8 +45,7 @@ public class Agent implements _Agent {
 		    Jar baseCode = loader.extractCode();
 		    os.writeObject(baseCode);
 		    os.writeObject(this);
-		    os.close();
-		    logger.log(Level.INFO, "agent déplacé");
+		    s.close();
 		} catch (UnknownHostException e) {
 		    e.printStackTrace();
 		} catch (IOException e) {
@@ -53,7 +54,7 @@ public class Agent implements _Agent {
 		
 	    }
 	}else{
-	    logger.log(Level.INFO, "feuille de route épuisé");
+	    logger.log(Level.INFO, "Fin de la feuille de route, retour au serveur " + serverName);
 	}
     }
 
@@ -62,6 +63,7 @@ public class Agent implements _Agent {
 	this.agentServer = agentServer;
 	this.serverName = serverName;
 	this.route = new Route(new Etape(agentServer.site(), _Action.NIHIL));
+	this.route.add(new Etape(agentServer.site(), _Action.NIHIL));
 	try {
 	    logger = Logger.getLogger("jus.aor.mobilagent." + InetAddress.getLocalHost().getHostName() + "." + serverName);
 	} catch (UnknownHostException e) {
