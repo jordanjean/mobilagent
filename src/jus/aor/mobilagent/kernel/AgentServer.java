@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * 
  * @author Morat
  */
-final class AgentServer implements Runnable {
+public final class AgentServer implements Runnable {
     /** le logger de ce serveur */
     private Logger logger;
     /** La table des services utilisables sur ce serveur */

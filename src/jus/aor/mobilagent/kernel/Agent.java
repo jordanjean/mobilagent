@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jus.aor.mobilagent.kernel._Service;
 
 public class Agent implements _Agent {
 
@@ -18,7 +19,7 @@ public class Agent implements _Agent {
     /**
      * 
      */
-    private transient AgentServer agentServer;
+    protected transient AgentServer agentServer;
     protected transient String serverName;
     private Route route;
     private transient Logger logger;
@@ -88,5 +89,9 @@ public class Agent implements _Agent {
     protected _Action retour() {
 	return this.route.retour.action;
     }
+    
+	protected _Service<?> getService(String nomService){
+		return agentServer.getService(nomService);
+	}
 
 }
