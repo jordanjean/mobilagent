@@ -67,7 +67,7 @@ public class LookForHotel extends Agent {
 			public void execute() {
 				_Service<?> service = agentServer.getService("Telephones");
 				for(Hotel hotel : hotels) {
-					
+						
 					Numero num = (Numero) service.call(hotel.name);
 					
 					numeros.put(hotel,num);
