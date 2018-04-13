@@ -116,15 +116,14 @@ public final class Server implements _Server {
 	 * @throws Exception
 	 */
 	protected void startAgent(_Agent agent, BAMAgentClassLoader loader) throws Exception {
-		//A COMPLETER
-		Socket s = new Socket(this.agentServer.site().getHost(), this.agentServer.site().getPort());
+    	//A COMPLETER
+    	Socket s = new Socket(this.agentServer.site().getHost(), this.agentServer.site().getPort());
     	ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
     	Jar baseCode = loader.extractCode();
     	os.writeObject(baseCode);
     	os.writeObject(agent);
-//    	os.close();
     	s.close();
-    	logger.log(Level.INFO, "Agent envoyé sur le premier serveur");
+    	logger.log(Level.INFO, "Agent envoyé sur ce même serveur");
 	}
 	
 	@Override

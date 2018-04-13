@@ -17,8 +17,21 @@ public interface _Action extends Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see jus.aor.mobilagent.kernel._Action#execute()
+	 */
 	public void execute() {
 	    System.out.println("action vide");
+	}
+	
+	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString(){
+	    return "action vide";
 	}
     };
 

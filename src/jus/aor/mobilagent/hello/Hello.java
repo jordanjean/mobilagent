@@ -13,6 +13,7 @@ public class Hello extends Agent{
      * 
      */
     private static final long serialVersionUID = 1L;
+    private String feuille_de_route = "";
 	/**
 	  * construction d'un agent de type hello.
 	  * @param args aucun argument n'est requis
@@ -28,21 +29,44 @@ public class Hello extends Agent{
 	    /**
 	     * 
 	     */
-	    private static final long serialVersionUID = 1L;
+	    private static final long serialVersionUID = -9129644307555501553L;
 
 	    @Override
 	    public void execute() {
+		feuille_de_route = feuille_de_route.concat(" -> " + serverName);
 		System.out.println("Serveur : " + serverName);
 	    }
-		// ...
+	    
+	    @Override
+	    public String toString(){
+		return "doIt";
+	    }
 	};
-	/* (non-Javadoc)
+	
+	protected _Action retour = new _Action(){
+
+	    /**
+	     * 
+	     */
+	    private static final long serialVersionUID = 8112403583439231794L;
+
+	    @Override
+	    public void execute() {
+		System.out.println("Route : " + feuille_de_route);
+	    }
+	    
+	    @Override
+	    public String toString(){
+		return "retour";
+	    }
+	};
+
+	@Override
+	/*
+	 * (non-Javadoc)
 	 * @see jus.aor.mobilagent.kernel.Agent#retour()
 	 */
-	@Override
 	protected _Action retour(){
-	    return this.retour();
-		// return ...;
+	    return this.retour;
 	}
-	// ...
 }

@@ -141,6 +141,10 @@ public final class AgentServer implements Runnable {
 	    return null;
 	}
     }
+
+    public void terminate() {
+	this.running = false;
+    }
 }
 
 /**
