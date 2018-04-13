@@ -8,7 +8,6 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jus.aor.mobilagent.kernel._Service;
 
 public abstract class Agent implements _Agent {
 
@@ -92,8 +91,6 @@ public abstract class Agent implements _Agent {
 	route.add(etape);
     }
 
-    protected _Action retour() {
-	return this.route.retour.action;
-    }	
+    abstract protected _Action retour();
 
 }

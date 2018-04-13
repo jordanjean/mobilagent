@@ -2,5 +2,7 @@
 <!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.0 Transitional//EN" "Server.dtd"> 
 <server>
 	<port value="2222"/>
+	<service name="hotels" class="jus.aor.mobilagent.hotels.Chaine" codebase="File:build/Chaine.jar"  args="DataStore/Hotels1.xml"/>
+	
 </server>
 

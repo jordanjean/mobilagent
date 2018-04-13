@@ -72,6 +72,8 @@ public final class Server implements _Server {
 		    	
 		    	this.agentServer.addService(name, service);
 		}catch(Exception ex){
+		    	System.out.println(ex.getMessage());
+		    	ex.printStackTrace();
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
 		}

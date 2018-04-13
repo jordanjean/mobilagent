@@ -124,7 +124,7 @@ public final class AgentServer implements Runnable {
      * @param name
      * @return le service souhaité ou null
      */
-    _Service<?> getService(String name) {
+    public _Service<?> getService(String name) {
 	return services.get(name);
     }
 
