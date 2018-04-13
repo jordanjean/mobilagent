@@ -88,10 +88,6 @@ public class Agent implements _Agent {
 
     protected _Action retour() {
 	return this.route.retour.action;
-    }
-    
-	protected _Service<?> getService(String nomService){
-		return agentServer.getService(nomService);
-	}
+    }	
 
 }
