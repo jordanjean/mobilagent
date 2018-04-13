@@ -16,7 +16,6 @@ public class LookForHotel extends Agent {
     * 
     */
     private static final long serialVersionUID = 8584911057064016328L;
-    /** le critère de localisaton choisi */
     private String localisation;
     private List<Hotel> hotels = new ArrayList<Hotel>();
     private HashMap<Hotel, Numero> numeros;
